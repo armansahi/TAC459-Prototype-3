@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Founder Intake | Contrario prototype 3</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,sans-serif;background:#fafaf9;color:#1c1917;line-height:1.55}
+.wrap{max-width:920px;margin:0 auto;padding:0 24px}
+.tag{font-size:12px;color:#78716c;letter-spacing:.04em;text-transform:uppercase}
+hero{display:block;padding:56px 0 32px}
+h1{font-size:40px;line-height:1.15;margin:8px 0 14px;letter-spacing:-.02em}
+.lead{font-size:19px;color:#44403c;max-width:680px;margin:0}
+section.b{padding:36px 0;border-top:1px solid #e7e5e4}
+h2{font-size:24px;margin:0 0 6px;letter-spacing:-.01em}
+.sub{color:#78716c;margin:0 0 22px;font-size:15px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:760px){.two,.three{grid-template-columns:1fr}h1{font-size:30px}}
+.card{background:#fff;border:1px solid #e7e5e4;border-radius:12px;padding:18px}
+.card h3{margin:0 0 6px;font-size:15px}.card p{margin:0;font-size:14px;color:#57534e}
+.bad{border-color:#fecaca;background:#fef2f2}.good{border-color:#bbf7d0;background:#f0fdf4}
+.steps{counter-reset:s;display:grid;gap:12px}
+.step{display:flex;gap:16px;background:#fff;border:1px solid #e7e5e4;border-radius:12px;padding:16px 18px}
+.step:before{counter-increment:s;content:counter(s);flex-shrink:0;width:30px;height:30px;border-radius:50%;background:#1c1917;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px}
+.step b{display:block;font-size:16px;margin-bottom:2px}.step span{font-size:14px;color:#57534e}
+.chat{background:#fff;border:1px solid #e7e5e4;border-radius:12px;padding:16px}
+.m{display:flex;margin-bottom:10px}.m.u{justify-content:flex-end}
+.m div{max-width:85%;padding:9px 13px;border-radius:14px;font-size:14px;border:1px solid #e7e5e4;background:#fafaf9}
+.m.u div{background:#1c1917;color:#fff;border-color:#1c1917}
+.cap{font-size:12px;color:#78716c;margin:0 0 8px}
+.brief h4{margin:0 0 2px;font-size:17px}.brief .meta{font-size:13px;color:#78716c;margin-bottom:12px}
+.brief h5{margin:12px 0 4px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#78716c}
+.brief ul{margin:0;padding-left:18px;font-size:14px}
+.sc div{display:flex;gap:10px;padding:7px 0;border-top:1px solid #f0efed;font-size:14px}.sc div:first-child{border-top:0}
+.sc b{width:30px;flex-shrink:0}.sc small{display:block;color:#78716c;font-size:12px}
+.int{margin-top:12px;border:1px solid #fcd34d;background:#fffbeb;border-radius:8px;padding:10px 12px;font-size:13px;color:#78350f}
+.int b{font-size:11px;letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:2px}
+.flow{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap}
+.node{flex:1;min-width:190px;background:#fff;border:1px solid #e7e5e4;border-radius:12px;padding:14px 16px}
+.node.me{border:2px solid #1c1917}
+.node small{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#78716c;display:block;margin-bottom:2px}
+.node b{font-size:15px;display:block;margin-bottom:4px}.node span{font-size:13px;color:#57534e}
+.arr{align-self:center;color:#a8a29e;font-size:20px}
+.foot{padding:28px 0 56px;border-top:1px solid #e7e5e4;font-size:13px;color:#78716c}
+@media print{body{background:#fff}.wrap{max-width:none;padding:0 8px}.card,.step,.node,.chat{break-inside:avoid}.two{grid-template-columns:1fr 1fr!important}.three{grid-template-columns:repeat(3,1fr)!important}section.b{padding:22px 0}@page{margin:14mm}hero{padding:8px 0 16px}h1{font-size:32px}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<hero>
+  <div class="tag">TAC 459 · Prototype 3 of 3 · Contrario (YC W25)</div>
+  <h1>Founder Intake</h1>
+  <p class="lead">A five-minute chat that turns a founder's messy hiring notes into a clear role brief and a scorecard recruiters can actually use.</p>
+</hero>
+
+<section class="b">
+  <h2>The problem</h2>
+  <p class="sub">Contrario's recruiters are only as good as the brief they get from the founder.</p>
+  <div class="two">
+    <div class="card bad"><h3>What founders send today</h3><p>"We need a strong full-stack engineer, ideally from healthtech." Vague, missing pay, nothing on what to avoid, and no way to tell a good candidate from a great one.</p></div>
+    <div class="card"><h3>What that costs</h3><p>Recruiters guess, submit the wrong people, and keep pinging the founder with questions. Prototype 1's copilot answers questions from the brief, so a thin brief means thin answers.</p></div>
+  </div>
+</section>
+
+<section class="b">
+  <h2>How it works</h2>
+  <p class="sub">The founder talks. The AI interviews. A brief builds itself on the side.</p>
+  <div class="steps">
+    <div class="step"><div><b>The founder describes the role</b><span>Messy notes are fine. No form to fill in.</span></div></div>
+    <div class="step"><div><b>The AI asks one follow-up at a time</b><span>When an answer is vague ("strong engineer"), it pushes for something concrete: a company they'd poach from, a project the person would ship.</span></div></div>
+    <div class="step"><div><b>The brief fills in live</b><span>Must-haves, dealbreakers, pay, and why a candidate would say yes. Anything confidential goes to a private section. Anything not said is flagged as a question, never made up.</span></div></div>
+    <div class="step"><div><b>It ends with a 100-point scorecard</b><span>4 to 5 criteria with points and a plain description of what earns full marks. The founder exports the brief for recruiters, with internal notes stripped out.</span></div></div>
+  </div>
+</section>
+
+<section class="b">
+  <h2>What it looks like</h2>
+  <p class="sub">An illustrative example, written by hand to show the format. It is not real model output.</p>
+  <div class="two">
+    <div>
+      <p class="cap">The conversation</p>
+      <div class="chat">
+        <div class="m u"><div>We're Lumen, a seed-stage startup. Need a founding senior full-stack engineer in SF, someone strong from healthtech or dev tools.</div></div>
+        <div class="m"><div>Got it. "Strong" can mean a lot of things. Which company would you most want to hire this person from, and why?</div></div>
+        <div class="m u"><div>Someone from Redox or Healthie. They've already dealt with messy EHR integrations.</div></div>
+        <div class="m"><div>Helpful. Is there anything that would rule a candidate out, even with the right resume?</div></div>
+        <div class="m u"><div>No pure front-end people. And keep the $190k top of range between us.</div></div>
+      </div>
+    </div>
+    <div>
+      <p class="cap">The brief it builds</p>
+      <div class="card brief">
+        <h4>Founding Senior Full-Stack Engineer</h4>
+        <div class="meta">Lumen · Senior · San Francisco</div>
+        <h5>Must-haves</h5><ul><li>Shipped EHR integrations in production</li><li>Strong full-stack depth</li></ul>
+        <h5>Dealbreakers</h5><ul><li>Front-end only background</li></ul>
+        <h5>Scorecard · 100 points</h5>
+        <div class="sc">
+          <div><b>35</b><p style="margin:0">EHR integration experience<small>Has built and run integrations like Redox or Healthie's</small></p></div>
+          <div><b>30</b><p style="margin:0">Full-stack depth<small>Owns backend and frontend work end to end</small></p></div>
+          <div><b>20</b><p style="margin:0">Early-stage fit<small>Has worked at small startups</small></p></div>
+          <div><b>15</b><p style="margin:0">Communication<small>Clear, specific, detailed answers</small></p></div>
+        </div>
+        <div class="int"><b>Internal, never shared</b>Top of pay range is $190k</div>
+        <h5>Still to confirm</h5><ul><li>Equity range</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="b">
+  <h2>Where it fits</h2>
+  <p class="sub">The three prototypes form one pipeline, with Founder Intake at the start.</p>
+  <div class="flow">
+    <div class="node me"><small>Prototype 3 · this one</small><b>Founder Intake</b><span>Founder's notes become a brief and scorecard</span></div>
+    <div class="arr">→</div>
+    <div class="node"><small>Prototype 1</small><b>Role Brief Copilot</b><span>Answers recruiters' questions from that brief</span></div>
+    <div class="arr">→</div>
+    <div class="node"><small>Prototype 2</small><b>Recruiter Vetting</b><span>Same 100-point scoring style, applied to recruiters</span></div>
+  </div>
+</section>
+
+<section class="b">
+  <h2>What we need to learn next</h2>
+  <div class="three">
+    <div class="card"><h3>From founders</h3><p>Would they use a chat instead of writing a brief? Is five minutes the right length?</p></div>
+    <div class="card"><h3>From recruiters</h3><p>Is the scorecard clearer than what they get today? What's still missing?</p></div>
+    <div class="card"><h3>For the final product</h3><p>The scorecard idea fits the required website. This feedback helps us decide.</p></div>
+  </div>
+</section>
+
+<div class="foot">Built with Next.js and the Grok API (structured output). Student prototype for USC TAC 459; not affiliated with or endorsed by Contrario. Status: lightweight prototype, not yet tested with real founders.</div>
+</div>
+</body>
+</html>

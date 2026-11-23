@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Founder Intake | Contrario prototype 3</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,sans-serif;background:#fafaf9;color:#1c1917;height:100vh;display:flex;flex-direction:column}
+header{padding:12px 24px;border-bottom:1px solid #e7e5e4;background:#fff;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+header h1{margin:0;font-size:16px}header p{margin:2px 0 0;font-size:12px;color:#78716c}
+header span{font-size:11px;color:#a8a29e}
+main{flex:1;display:grid;grid-template-columns:1fr 1fr;min-height:0}
+@media(max-width:800px){main{grid-template-columns:1fr;grid-template-rows:1fr 1fr}}
+.pane{display:flex;flex-direction:column;min-height:0}
+.chat{border-right:1px solid #e7e5e4}
+.scroll{flex:1;overflow-y:auto;padding:20px}
+.row{display:flex;margin-bottom:12px}.row.user{justify-content:flex-end}
+.bubble{max-width:85%;padding:10px 14px;border-radius:16px;font-size:14px;line-height:1.5;white-space:pre-wrap;background:#fff;border:1px solid #e7e5e4}
+.user .bubble{background:#1c1917;color:#fff;border-color:#1c1917}
+.muted{color:#a8a29e;font-style:italic}
+.err{font-size:13px;color:#b91c1c;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:10px;margin-bottom:12px}
+form{padding:12px 16px;border-top:1px solid #e7e5e4;background:#fff}
+.link{background:none;border:0;padding:0 0 8px;font-size:12px;color:#78716c;text-decoration:underline;cursor:pointer}
+.inrow{display:flex;gap:8px}
+textarea{flex:1;resize:none;border:1px solid #d6d3d1;border-radius:8px;padding:8px 12px;font:inherit;font-size:14px}
+textarea:focus{outline:2px solid #1c1917}
+button.p{background:#1c1917;color:#fff;border:0;border-radius:8px;padding:0 16px;font-size:14px;font-weight:500;cursor:pointer}
+button:disabled{opacity:.4;cursor:default}
+.brief{background:#fff}
+.bar{padding:10px 20px;border-bottom:1px solid #e7e5e4;display:flex;align-items:center;gap:12px}
+.prog{flex:1}.prog div.l{display:flex;justify-content:space-between;font-size:12px;color:#78716c;margin-bottom:4px}
+.track{height:6px;background:#f5f5f4;border-radius:3px}.fill{height:6px;background:#1c1917;border-radius:3px;transition:width .4s}
+.sm{font-size:12px;border:1px solid #d6d3d1;background:#fff;border-radius:6px;padding:6px 10px;cursor:pointer}
+h2{margin:0;font-size:20px}.sub{font-size:14px;color:#78716c;margin:2px 0 16px}
+h3{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#78716c;margin:0 0 6px}
+section{margin-bottom:18px}
+ul{margin:0;padding:0;list-style:none}li{font-size:14px;line-height:1.4;margin-bottom:5px;display:flex;gap:8px}
+li i{font-style:normal;color:#a8a29e}li.x i{color:#ef4444}
+.sc{border:1px solid #e7e5e4;border-radius:8px}.sc div{display:flex;gap:12px;padding:10px 12px;border-top:1px solid #e7e5e4}.sc div:first-child{border-top:0}
+.sc b{width:34px;flex-shrink:0;font-size:14px}.sc p{margin:0;font-size:14px;font-weight:500}.sc small{display:block;font-size:12px;color:#78716c;margin-top:2px;font-weight:400}
+.note{font-size:12px;color:#78716c;margin-top:6px}
+.internal{border:1px solid #fcd34d;background:#fffbeb;border-radius:8px;padding:12px}.internal h3{color:#92400e}.internal li{color:#78350f}
+.empty{font-size:14px;color:#a8a29e}
+.pill{font-size:11px;background:#f5f5f4;border-radius:999px;padding:2px 8px;color:#78716c}
+</style>
+</head>
+<body>
+<header>
+  <div><h1>Founder Intake</h1><p>Turn a founder conversation into a role brief and 100-point scorecard</p></div>
+  <span>TAC 459 · Prototype 3 · student prototype, not affiliated with Contrario</span>
+</header>
+<main>
+  <div class="pane chat">
+    <div class="scroll" id="log"></div>
+    <form id="f">
+      <button type="button" class="link" id="ex">Use an example founder message</button>
+      <div class="inrow">
+        <textarea id="in" rows="2" placeholder="Describe the role, answer the question…"></textarea>
+        <button class="p" id="send" disabled>Send</button>
+      </div>
+    </form>
+  </div>
+  <div class="pane brief">
+    <div class="bar">
+      <div class="prog"><div class="l"><span>Brief completeness</span><span id="pct">0%</span></div><div class="track"><div class="fill" id="fill" style="width:0"></div></div></div>
+      <button class="sm" id="copyS" disabled>Copy shareable</button>
+      <button class="sm" id="copyF" disabled>Copy full</button>
+      <span class="pill" id="mode"></span>
+    </div>
+    <div class="scroll" id="brief"><p class="empty">The brief builds here as you talk.</p></div>
+  </div>
+</main>
+<script>
+const GREETING="Hi, I'm Contrario's intake assistant. Tell me about the role you're hiring for, messy notes are fine. Who do you need, and what should they own?";
+const EXAMPLE="We're Lumen, a 12-person seed-stage startup building AI note-taking for clinicians. I need a founding senior full-stack engineer in SF. They'd own our EHR integrations. We need someone strong, ideally from a healthtech or dev-tools company.";
+const SYSTEM=`You are the intake interviewer for Contrario, a recruiting network that pairs expert recruiters with AI. A startup founder is telling you about a role they want to fill. Turn the conversation into a precise role brief and a 100-point scorecard that recruiters will use to source and screen candidates.
+
+How to interview:
+- Ask ONE question per turn, friendly and direct, under 60 words.
+- If an answer is vague ("strong engineer", "great culture fit"), push for something observable: a company they would poach from, a project the person would ship, a number.
+- Cover roughly in order: what the person owns in 90 days, must-haves, dealbreakers, compensation and location, why a great candidate would say yes, what is confidential.
+- Anything the founder says should NOT be shared with candidates or recruiters goes in internalNotes, never in shareable sections.
+- NEVER invent facts. If something has not been said, leave it empty and add a short item to openQuestions.
+- Once you know enough, propose 4-5 scorecard criteria whose weights sum to exactly 100, each with a concrete description of what earns full marks. Verdicts: 75+ Good fit, 55-74 Possible fit, under 55 Not a fit.
+- ready=true only when roleTitle, at least 3 mustHaves, compensation and a complete scorecard exist. When ready, summarise what you built and invite edits.
+
+Reply with ONLY a JSON object, no markdown fences, with exactly this shape and the FULL current brief every turn:
+{"message":string,"completeness":number(0-100),"ready":boolean,"brief":{"roleTitle":string,"company":string,"level":string,"location":string,"summary":string,"mustHaves":string[],"niceToHaves":string[],"dealbreakers":string[],"compensation":string,"sellingPoints":string[],"scorecard":[{"criterion":string,"weight":number,"fullMarks":string}],"internalNotes":string[],"openQuestions":string[]}}`;
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let msgs=[],brief=null,ready=false,loading=false,sample=null;
+
+function normalize(b){
+  const sc=Array.isArray(b.scorecard)?b.scorecard.filter(c=>c&&Number.isFinite(+c.weight)):[];
+  const tot=sc.reduce((s,c)=>s+ +c.weight,0);
+  if(sc.length&&tot>0&&tot!==100){
+    sc.forEach(c=>c.weight=Math.round(c.weight/tot*100));
+    sc[0].weight+=100-sc.reduce((s,c)=>s+c.weight,0);
+  }
+  const arr=k=>Array.isArray(b[k])?b[k].map(String):[];
+  return {roleTitle:b.roleTitle||"",company:b.company||"",level:b.level||"",location:b.location||"",summary:b.summary||"",
+    mustHaves:arr("mustHaves"),niceToHaves:arr("niceToHaves"),dealbreakers:arr("dealbreakers"),compensation:b.compensation||"",
+    sellingPoints:arr("sellingPoints"),scorecard:sc,internalNotes:arr("internalNotes"),openQuestions:arr("openQuestions")};
+}
+function parseJSON(t){
+  const s=t.indexOf("{"),e=t.lastIndexOf("}");
+  if(s<0||e<s)throw new Error("The model did not return a brief. Try again.");
+  return JSON.parse(t.slice(s,e+1));
+}
+function md(b,internal){
+  const l=a=>a.length?a.map(i=>"- "+i).join("\n"):"- _not provided_";
+  const rows=b.scorecard.map(c=>`| ${c.criterion} | ${c.weight} | ${c.fullMarks} |`).join("\n");
+  const p=[`# ${b.roleTitle||"Untitled role"}${b.company?" at "+b.company:""}`,[b.level,b.location].filter(Boolean).join(" · "),
+   `## Summary\n${b.summary||"_not provided_"}`,`## Must-haves\n${l(b.mustHaves)}`,`## Nice-to-haves\n${l(b.niceToHaves)}`,
+   `## Dealbreakers\n${l(b.dealbreakers)}`,`## Compensation\n${b.compensation||"_not provided_"}`,`## Why candidates say yes\n${l(b.sellingPoints)}`,
+   `## Scorecard (100 points)\n| Criterion | Points | What earns full marks |\n|---|---|---|\n${rows}\n\n**Verdict:** 75+ Good fit · 55–74 Possible fit · under 55 Not a fit`];
+  if(internal)p.push(`## INTERNAL (do not share with candidates)\n${l(b.internalNotes)}`);
+  if(b.openQuestions.length)p.push(`## Still to confirm with the founder\n${l(b.openQuestions)}`);
+  return p.filter(Boolean).join("\n\n")+"\n";
+}
+const list=(t,a,x)=>a.length?`<section><h3>${t}</h3><ul>${a.map(i=>`<li class="${x?"x":""}"><i>${x?"✕":"•"}</i><span>${esc(i)}</span></li>`).join("")}</ul></section>`:"";
+function renderBrief(){
+  const b=brief;
+  if(!b||!(b.roleTitle||b.mustHaves.length||b.scorecard.length)){$("brief").innerHTML='<p class="empty">The brief builds here as you talk.</p>';return}
+  $("brief").innerHTML=`<h2>${esc(b.roleTitle||"Untitled role")}</h2><p class="sub">${esc([b.company,b.level,b.location].filter(Boolean).join(" · "))}</p>`
+   +(b.summary?`<section><p style="font-size:14px;line-height:1.5;margin:0">${esc(b.summary)}</p></section>`:"")
+   +list("Must-haves",b.mustHaves)+list("Nice-to-haves",b.niceToHaves)+list("Dealbreakers",b.dealbreakers,true)
+   +(b.compensation?`<section><h3>Compensation</h3><p style="font-size:14px;margin:0">${esc(b.compensation)}</p></section>`:"")
+   +list("Why candidates say yes",b.sellingPoints)
+   +(b.scorecard.length?`<section><h3>Scorecard · 100 points</h3><div class="sc">${b.scorecard.map(c=>`<div><b>${c.weight}</b><p>${esc(c.criterion)}<small>${esc(c.fullMarks)}</small></p></div>`).join("")}</div><p class="note">75+ Good fit · 55–74 Possible fit · under 55 Not a fit</p></section>`:"")
+   +(b.internalNotes.length?`<section class="internal"><h3>Internal · never shared with candidates</h3><ul>${b.internalNotes.map(n=>`<li>• ${esc(n)}</li>`).join("")}</ul></section>`:"")
+   +list("Still to confirm",b.openQuestions);
+  $("copyS").disabled=false;$("copyF").disabled=!ready;
+}
+function renderLog(err){
+  let h=`<div class="row"><div class="bubble">${esc(GREETING)}</div></div>`;
+  msgs.forEach(m=>h+=`<div class="row ${m.role}"><div class="bubble">${esc(m.content)}</div></div>`);
+  if(loading)h+=`<div class="row"><div class="bubble muted">Thinking…</div></div>`;
+  if(err)h+=`<div class="err">${esc(err)}</div>`;
+  $("log").innerHTML=h;$("log").scrollTop=1e9;
+}
+async function send(text){
+  text=text.trim();if(!text||loading)return;
+  msgs.push({role:"user",content:text});$("in").value="";loading=true;$("send").disabled=true;renderLog();
+  const transcript=msgs.map(m=>(m.role==="user"?"FOUNDER: ":"INTERVIEWER: ")+m.content).join("\n");
+  const prompt=`${SYSTEM}\n\nCurrent brief (JSON):\n${JSON.stringify(brief)}\n\nConversation so far:\n${transcript}\n\nReturn the JSON for the interviewer's next turn.`;
+  try{
+    const r=await sample(prompt,{cache:false});
+    const t=parseJSON(r.text);
+    brief=normalize(t.brief||{});ready=!!t.ready;
+    const pct=Math.max(0,Math.min(100,Math.round(+t.completeness||0)));
+    $("pct").textContent=pct+"%";$("fill").style.width=pct+"%";
+    msgs.push({role:"assistant",content:String(t.message||"")});
+    loading=false;renderLog();renderBrief();
+  }catch(e){
+    msgs.pop();loading=false;renderLog(e&&e.message?e.message:"Something went wrong. Try again.");
+  }
+  $("send").disabled=!$("in").value.trim();
+}
+async function copy(btn,text){
+  try{await navigator.clipboard.writeText(text);const o=btn.textContent;btn.textContent="Copied";setTimeout(()=>btn.textContent=o,1500)}
+  catch{btn.textContent="Copy blocked";setTimeout(()=>btn.textContent=btn.id==="copyS"?"Copy shareable":"Copy full",1500)}
+}
+$("f").addEventListener("submit",e=>{e.preventDefault();send($("in").value)});
+$("in").addEventListener("input",()=>$("send").disabled=loading||!$("in").value.trim());
+$("in").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();send($("in").value)}});
+$("ex").addEventListener("click",()=>{$("in").value=EXAMPLE;$("send").disabled=false;$("in").focus()});
+$("copyS").addEventListener("click",()=>copy($("copyS"),md(brief,false)));
+$("copyF").addEventListener("click",()=>copy($("copyF"),md(brief,true)));
+renderLog();
+(async()=>{
+  try{sample=await claude.use("sample")}catch{sample=null}
+  if(!sample){
+    $("mode").textContent="AI unavailable here";
+    $("in").disabled=true;$("ex").disabled=true;
+    $("log").insertAdjacentHTML("beforeend",'<div class="err">The live AI is not available in this view. Open the artifact in claude.ai to try it.</div>');
+  }else $("mode").textContent="Live · powered by Claude";
+})();
+</script>
+</body>
+</html>
