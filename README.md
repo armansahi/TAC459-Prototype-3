@@ -46,11 +46,18 @@ npm run dev                  # http://localhost:3000
 
 `.env.local` is git-ignored. Variables match Prototype 1: `XAI_API_KEY`, `XAI_BASE_URL`, `GROK_MODEL`.
 
+## Tests
+
+```bash
+npm test   # 7 unit tests: scorecard rescaling to 100, internal notes stripped from the shareable export, schema validation
+```
+
 ## Layout
 
 ```
 src/app/page.tsx              Chat + live brief UI
 src/app/api/intake/route.ts   Grok call (structured output)
 src/lib/brief.ts              Brief schema, scorecard normalization, markdown export
+tests/brief.test.ts           Unit tests (Node test runner + tsx)
 artifact/                     Overview page (index.html) and a Claude-powered live demo
 ```

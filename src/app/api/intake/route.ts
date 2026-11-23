@@ -74,15 +74,15 @@ const BodySchema = z.object({
 });
 
 export async function POST(req: Request) {
+  const parsed = BodySchema.safeParse(await req.json().catch(() => null));
+  if (!parsed.success || parsed.data.messages[0].role !== "user") {
+    return Response.json({ error: "Send a non-empty messages array that starts with a user message." }, { status: 400 });
+  }
   if (!process.env.XAI_API_KEY) {
     return Response.json(
       { error: "XAI_API_KEY is not set. Copy .env.example to .env.local and add your Grok key." },
       { status: 500 },
     );
-  }
-  const parsed = BodySchema.safeParse(await req.json().catch(() => null));
-  if (!parsed.success || parsed.data.messages[0].role !== "user") {
-    return Response.json({ error: "Send a non-empty messages array that starts with a user message." }, { status: 400 });
   }
 
   try {

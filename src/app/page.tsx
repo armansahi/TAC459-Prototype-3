@@ -74,7 +74,7 @@ export default function Home() {
     const blob = new Blob([toMarkdown(brief, includeInternal)], { type: "text/markdown" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = `${(brief.roleTitle || "role-brief").toLowerCase().replace(/[^a-z0-9]+/g, "-")}.md`;
+    a.download = `${(brief.roleTitle || "role-brief").toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${includeInternal ? "full" : "shareable"}.md`;
     a.click();
     URL.revokeObjectURL(a.href);
   }
