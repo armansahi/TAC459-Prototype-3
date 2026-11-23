@@ -28,7 +28,7 @@ Documents:
 - [Founder-Intake-Overview.pdf](Founder-Intake-Overview.pdf): plain-language overview of this product.
 - [docs/Contrario-Capstone-Three-Prototypes.pdf](docs/Contrario-Capstone-Three-Prototypes.pdf): Dec 2 submission document covering all three prototypes (code links and screenshots). Source: [docs/submission.html](docs/submission.html).
 
-The overview's example brief Its example brief is hand-written for illustration, not real model output.
+The example brief in the overview is hand-written for illustration, not real model output.
 
 ## How it works
 
