@@ -6,7 +6,13 @@ Built for [Contrario](https://contrario.ai) (YC W25) as part of USC's TAC 459 Ge
 
 > Student prototype. Not affiliated with or endorsed by Contrario.
 
-**Status:** lightweight prototype. The UI and API route are built; it has not yet been tested end to end against the live Grok API or with real founders.
+**Status:** lightweight prototype. Tested end to end against the live Grok API with a scripted six-turn founder conversation (scorecard weights totalled 100, and the confidential pay figure stayed out of every shareable field). Not yet tested with real founders.
+
+## Screenshots
+
+![Chat and live brief](docs/screenshots/01-chat-and-live-brief.jpg)
+
+![Scorecard and internal notes](docs/screenshots/02-scorecard-and-internal-notes.jpg)
 
 ## What it does
 
