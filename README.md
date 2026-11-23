@@ -24,7 +24,11 @@ Built for [Contrario](https://contrario.ai) (YC W25) as part of USC's TAC 459 Ge
 
 The exported `.md` brief is meant to feed Prototype 1 (Role Brief Copilot).
 
-An overview of the product is in [Founder-Intake-Overview.pdf](Founder-Intake-Overview.pdf). Its example brief is hand-written for illustration, not real model output.
+Documents:
+- [Founder-Intake-Overview.pdf](Founder-Intake-Overview.pdf): plain-language overview of this product.
+- [docs/Contrario-Capstone-Three-Prototypes.pdf](docs/Contrario-Capstone-Three-Prototypes.pdf): Dec 2 submission document covering all three prototypes (code links and screenshots). Source: [docs/submission.html](docs/submission.html).
+
+The overview's example brief Its example brief is hand-written for illustration, not real model output.
 
 ## How it works
 
